@@ -5,6 +5,7 @@ require("dotenv").config();
 const { exec } = require("child_process");
 
 const SERIAL_PORT = process.env.SERIAL_PORT;
+var poids = 0;
 
 var xbeeAPI = new xbee_api.XBeeAPI({
   api_mode: 2,
@@ -63,7 +64,7 @@ xbeeAPI.parser.on("data", function (frame) {
     console.log(">> Analog Sample AD0:", frame.analogSamples.AD1);
     console.log(">> Raw Frame Data:", frame);
 
-    if (frame.analogSamples.AD1 > 0) {
+    if (frame.analogSamples.AD1 > poids) {
       exec(
         'mosquitto_pub -h test.mosquitto.org -t lettres/topic -m "Vous venez de recevoir un courrier"',
         (error, stdout, stderr) => {
@@ -80,6 +81,7 @@ xbeeAPI.parser.on("data", function (frame) {
           console.log(`Commande exécutée avec succès: ${stdout}`);
         }
       );
+      poids = frame.analogSamples.AD1;
     }
   } else if (C.FRAME_TYPE.REMOTE_COMMAND_RESPONSE === frame.type) {
     console.log("REMOTE_COMMAND_RESPONSE");
