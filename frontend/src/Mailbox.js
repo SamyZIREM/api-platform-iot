@@ -65,14 +65,14 @@ const Mailbox = () => {
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Entrez un message"
           />
-          <button onClick={handlePublish}>Envoyer</button>
+          <button onClick={handlePublish}>Envoyer (test)</button>
           <button onClick={handleClearMessages}>Effacer les messages</button>
         </div>
-        <h2>Notifications messages (courriers) Reçus</h2>
+        <h2>Notifications courriers reçus</h2>
         <ul className="message-list">
           {receivedMessages.map(({ msg, timestamp }, index) => (
             <li key={index} className="message-item">
-              <strong>Courrier reçu :</strong> {msg}
+              <strong>Notification :</strong> {msg}
               <div className="timestamp">{timestamp}</div>
             </li>
           ))}
