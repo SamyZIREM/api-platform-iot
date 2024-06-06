@@ -13,11 +13,11 @@ const Mailbox = () => {
 
     mqttClient.on("connect", () => {
       console.log("Connected to broker");
-      mqttClient.subscribe("test/topic", (err) => {
+      mqttClient.subscribe("lettres/topic", (err) => {
         if (err) {
           console.error("Subscription error:", err);
         } else {
-          console.log("Subscribed to topic: test/topic");
+          console.log("Subscribed to topic: lettres/topic");
         }
       });
     });
@@ -28,8 +28,9 @@ const Mailbox = () => {
 
     mqttClient.on("message", (topic, message) => {
       const msg = message.toString();
+      const timestamp = new Date().toLocaleString();
       console.log("Received message:", msg);
-      setReceivedMessages((prev) => [...prev, msg]);
+      setReceivedMessages((prev) => [...prev, { msg, timestamp }]);
     });
 
     setClient(mqttClient);
@@ -41,7 +42,7 @@ const Mailbox = () => {
 
   const handlePublish = () => {
     if (client) {
-      client.publish("test/topic", message);
+      client.publish("lettres/topic", message);
       setMessage("");
     }
   };
@@ -52,7 +53,7 @@ const Mailbox = () => {
 
   return (
     <div className="mailbox-container">
-      <h1>Boîte aux Lettres Connectée</h1>
+      <h1>Boîte aux Lettres Connectée (test mqtt)</h1>
       <div className="input-container">
         <input
           type="text"
@@ -63,11 +64,12 @@ const Mailbox = () => {
         <button onClick={handlePublish}>Envoyer</button>
         <button onClick={handleClearMessages}>Effacer les messages</button>
       </div>
-      <h2>Messages Reçus</h2>
+      <h2>Messages (courriers) Reçus</h2>
       <ul className="message-list">
-        {receivedMessages.map((msg, index) => (
+        {receivedMessages.map(({ msg, timestamp }, index) => (
           <li key={index} className="message-item">
-            {msg}
+            <strong>Courrier reçu :</strong> {msg}
+            <div className="timestamp">{timestamp}</div>
           </li>
         ))}
       </ul>
