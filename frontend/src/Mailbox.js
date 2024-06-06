@@ -1,3 +1,4 @@
+// src/Mailbox.js
 import React, { useEffect, useState } from "react";
 import mqtt from "mqtt";
 import "./Mailbox.css";
@@ -52,27 +53,34 @@ const Mailbox = () => {
   };
 
   return (
-    <div className="mailbox-container">
-      <h1>Boîte aux Lettres Connectée (test mqtt)</h1>
-      <div className="input-container">
-        <input
-          type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Entrez un message"
-        />
-        <button onClick={handlePublish}>Envoyer</button>
-        <button onClick={handleClearMessages}>Effacer les messages</button>
-      </div>
-      <h2>Messages (courriers) Reçus</h2>
-      <ul className="message-list">
-        {receivedMessages.map(({ msg, timestamp }, index) => (
-          <li key={index} className="message-item">
-            <strong>Courrier reçu :</strong> {msg}
-            <div className="timestamp">{timestamp}</div>
-          </li>
-        ))}
-      </ul>
+    <div className="app-container">
+      <header className="app-header">
+        <h1>Boîte aux lettres Connectée</h1>
+      </header>
+      <main className="mailbox-container">
+        <div className="input-container">
+          <input
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Entrez un message"
+          />
+          <button onClick={handlePublish}>Envoyer</button>
+          <button onClick={handleClearMessages}>Effacer les messages</button>
+        </div>
+        <h2>Notifications messages (courriers) Reçus</h2>
+        <ul className="message-list">
+          {receivedMessages.map(({ msg, timestamp }, index) => (
+            <li key={index} className="message-item">
+              <strong>Courrier reçu :</strong> {msg}
+              <div className="timestamp">{timestamp}</div>
+            </li>
+          ))}
+        </ul>
+      </main>
+      <footer className="app-footer">
+        <p>&copy; 2024 Boîte aux lettres Connectée</p>
+      </footer>
     </div>
   );
 };

@@ -1,3 +1,27 @@
+/* src/Mailbox.css */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.app-header {
+    background-color: #007bff;
+    padding: 20px;
+    color: white;
+    text-align: center;
+    border-bottom: 5px solid #0056b3;
+}
+
+.app-footer {
+    background-color: #007bff;
+    padding: 10px;
+    color: white;
+    text-align: center;
+    border-top: 5px solid #0056b3;
+    margin-top: auto;
+}
+
 .mailbox-container {
     text-align: center;
     padding: 30px;
@@ -28,6 +52,7 @@ input[type="text"] {
 }
 
 button {
+    margin-left: 2%;
     padding: 12px 25px;
     font-size: 16px;
     color: #fff;
@@ -76,7 +101,7 @@ button:hover {
 }
 
 h1 {
-    color: #333; /* Couleur du texte */
+    color: #fff; /* Couleur du texte du header */
     font-size: 28px;
     margin-bottom: 20px;
 }
