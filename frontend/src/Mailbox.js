@@ -10,7 +10,7 @@ const Mailbox = () => {
 
   useEffect(() => {
     console.log("Connecting to broker...");
-    const mqttClient = mqtt.connect("ws://test.mosquitto.org:8081/mqtt");
+    const mqttClient = mqtt.connect("wss://test.mosquitto.org:8081");
 
     mqttClient.on("connect", () => {
       console.log("Connected to broker");
@@ -31,6 +31,7 @@ const Mailbox = () => {
       const msg = message.toString();
       const timestamp = new Date().toLocaleString();
       console.log("Received message:", msg);
+      if(!msg.startsWith('u'))
       setReceivedMessages((prev) => [...prev, { msg, timestamp }]);
     });
 
@@ -43,13 +44,25 @@ const Mailbox = () => {
 
   const handlePublish = () => {
     if (client) {
-      client.publish("lettres/topic", message);
+      client.publish("lettres/topic",  message);
       setMessage("");
     }
   };
 
   const handleClearMessages = () => {
     setReceivedMessages([]);
+  };
+
+  const handleClose = () => {
+    if (client) {
+      client.publish("lettres/topic", "u-fermer");
+    }
+  };
+
+  const handleOpen = () => {
+    if (client) {
+      client.publish("lettres/topic", "u-ouvrir");
+    }
   };
 
   return (
@@ -59,13 +72,9 @@ const Mailbox = () => {
       </header>
       <main className="mailbox-container">
         <div className="input-container">
-          <input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Entrez un message"
-          />
-          <button onClick={handlePublish}>Envoyer (test)</button>
+          
+          <button onClick={handleClose}>Fermer la porte</button>
+          <button onClick={handleOpen}>Ouvrir la porte </button>
           <button onClick={handleClearMessages}>Effacer les messages</button>
         </div>
         <h2>Notifications courriers reçus</h2>
